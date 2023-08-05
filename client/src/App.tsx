@@ -5,12 +5,15 @@ import { Task, fetchAllTasks, updateTask } from "./dataAccess";
 import "./App.css";
 
 function App() {
+	const [isLoading, setIsLoading] = useState(false);
 	const [tasks, setTasks] = useState<Task[]>([]);
 
 	useEffect(() => {
 		const fetchData = async () => {
+			setIsLoading(true);
 			const data = await fetchAllTasks();
 			setTasks(data);
+			setIsLoading(false);
 		};
 		fetchData();
 	}, []);
@@ -28,7 +31,7 @@ function App() {
 		<>
 			<h1>React-Query: Updating Array Item</h1>
 			<div className='card'>
-				{tasks.length <= 0 ? (
+				{isLoading ? (
 					<>Fetching Data....</>
 				) : (
 					<>
